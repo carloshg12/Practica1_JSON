@@ -1,0 +1,5 @@
+{"[{\"Alicante\":\"origen\",\"pAC29\":\"codviaje\",\"[]\":\"pasajeros\",\"Castellón\":\"destino\",\"16\":\"precio\",\"29-05-2023\":\"fecha\"}]":"viajes"}
+{"[{\"07-11-2023\":\"fecha\",\"Cordoba\":\"destino\",\"Castellón\":\"origen\",\"[]\":\"pasajeros\",\"jCC07\":\"codviaje\",\"39\":\"precio\"}]":"viajes"}
+{"[{\"07-06-2023\":\"fecha\",\"mMV07\":\"codviaje\",\"[]\":\"pasajeros\",\"Madrid\":\"origen\",\"Valencia\":\"destino\",\"7\":\"precio\"}]":"viajes"}
+{"[{\"Sevilla\":\"origen\",\"[]\":\"pasajeros\",\"cSB12\":\"codviaje\",\"Barcelona\":\"destino\",\"12-08-2023\":\"fecha\",\"64\":\"precio\"}]":"viajes"}
+{"[{\"Alicante\":\"destino\",\"28-05-2023\":\"fecha\",\"[]\":\"pasajeros\",\"Castellón\":\"origen\",\"16\":\"precio\",\"pCA28\":\"codviaje\"}]":"viajes"}
