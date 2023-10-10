@@ -71,19 +71,7 @@ public class GestorViajes {
      * @param os stream de escritura asociado al fichero de datos
      */
 
-    /*private void escribeFichero(FileWriter os) {
-        // POR IMPLEMENTAR
 
-        JSONArray jsonArray = new JSONArray();
-        for (String codigo : mapa.keySet()) {
-            jsonArray.add(mapa.get(codigo));
-        }
-        try {
-            os.write(jsonArray.toString());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }*/
     private void escribeFichero(FileWriter os) throws IOException {
 
 
@@ -150,7 +138,42 @@ public class GestorViajes {
      * @param array JSONArray con los datos de los Viajes
      */
     private void rellenaDiccionario(JSONArray array) {
-        // POR IMPLEMENTAR
+
+
+        try {
+            for (Object e : array) {
+                JSONObject eJsonObject = (JSONObject) e;
+                JSONObject destE = new JSONObject();
+                destE.put("num", eJsonObject.get("id"));
+                //destEstacions.put(destE);
+
+
+
+                // Supongamos que el JSON tiene una clave "clave" y un valor asociado "valor"
+                String clave = eJsonObject.get("codviaje").toString();
+                String codprop = eJsonObject.get("codprop").toString();
+                String origen = eJsonObject.get("origen").toString();
+                String destino = eJsonObject.get("destino").toString();
+                String fecha = eJsonObject.get("fecha").toString();
+                long precio = (long) eJsonObject.get("precio");
+                long numplazas = (long) eJsonObject.get("numplazas");
+                /*Vector<String> pasajeros = null;
+
+                for (String p : pasajeros){
+                    pasajeros.add(eJsonObject.get(p).toString());
+                }*/
+
+                Viaje viaje = new Viaje(codprop,origen,destino,fecha,precio,numplazas);
+
+                // Agregar la clave y el valor al HashMap
+                mapa.put(clave, viaje);
+            }
+
+            // El HashMap ahora contiene los elementos del JSONArray
+            System.out.println(mapa);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -176,6 +199,7 @@ public class GestorViajes {
     }
         public JSONObject reservaViaje (String codviaje, String codcli){
             // POR IMPLEMENTAR
+
         return null;
         }
 

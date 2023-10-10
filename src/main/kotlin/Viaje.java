@@ -51,7 +51,6 @@ public class Viaje implements Serializable {
      */
     public Viaje(JSONObject jsonViaje) {
         super();
-        // POR IMPLEMENTAR
 
         this.codprop = jsonViaje.get("codprop").toString();
         this.origen = jsonViaje.get("origen").toString();
