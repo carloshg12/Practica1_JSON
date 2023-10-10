@@ -102,6 +102,7 @@ public class Viaje implements Serializable {
         return jsonViaje;
     }
 
+
     /**
      * Indica si quedan plazas libres en el Viaje
      *
