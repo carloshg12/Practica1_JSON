@@ -79,29 +79,28 @@ public class Viaje implements Serializable {
      *
      * @return	objeto JSON con los datos del Viaje
      */
-    public JSONObject toJSON() {
-        // POR IMPLEMENTAR
 
-        JSONObject jsonObject = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
+    public JSONObject toJSON() {
+
         JSONObject jsonViaje = new JSONObject();
-        jsonViaje.put(codprop,"codpro");
-        jsonViaje.put(origen,"origen");
-        jsonViaje.put(destino,"destino");
-        jsonViaje.put(fecha,"fecha");
-        jsonViaje.put(precio,"precio");
-        jsonViaje.put(codviaje,"codviaje");
+
+        jsonViaje.put("codprop", codprop);
+        jsonViaje.put("origen", origen);
+        jsonViaje.put("destino", destino);
+        jsonViaje.put("fecha", fecha);
+        jsonViaje.put("precio", precio);
+        jsonViaje.put("codviaje", codviaje);
+        jsonViaje.put("numplazas", numplazas);
+
 
         JSONArray jsonPasajeros = new JSONArray();
-        for (int i = 0; i < jsonPasajeros.length();i++){
-            jsonPasajeros.put(pasajeros.get(i));
+        for (String pasajero : pasajeros) {
+            jsonPasajeros.put(pasajero);
         }
 
-        jsonViaje.put(jsonPasajeros,"pasajeros");
-        jsonArray.put(jsonViaje);
-        jsonObject.put(jsonArray,"viajes");
+        jsonViaje.put("pasajeros", jsonPasajeros);
 
-        return jsonObject;
+        return jsonViaje;
     }
 
     /**

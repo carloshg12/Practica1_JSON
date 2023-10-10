@@ -1,3 +1,4 @@
+import org.json.JSONException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -84,13 +85,20 @@ public class GestorViajes {
         }
     }*/
     private void escribeFichero(FileWriter os) throws IOException {
-        // POR IMPLEMENTAR
-        for(Map.Entry<String, Viaje> m : mapa.entrySet()){
-            Viaje viaje = new Viaje(m.getKey(),m.getValue().getOrigen(),m.getValue().getDestino(),m.getValue().getFecha(),m.getValue().getPrecio(),m.getValue().getNumplazas());
-            os.write(viaje.toJSON().toJSONString()+"\n");
+
+
+        JSONArray jsonArray = new JSONArray();
+        for (Viaje viaje : mapa.values()) {
+            jsonArray.add(viaje.toJSON());
         }
-        Vector[] hola = new Vector[2];
-        //Viaje viaje = new Viaje("pod","pene","asd","holi",i2,i3);
+        try {
+            os.write(jsonArray.toJSONString());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+
         // [{"fecha":"07-11-2023","precio":39,"codprop":"juan","pasajeros":[],"numplazas":3,"origen":"Castellón","destino":"Cordoba","codviaje":"jCC07"},{"fecha":"28-05-2023","precio":16,"codprop":"pedro","pasajeros":[],"numplazas":1,"origen":"Castellón","destino":"Alicante","codviaje":"pCA28"}]
     }
 
