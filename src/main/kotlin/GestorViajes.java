@@ -157,11 +157,10 @@ public class GestorViajes {
                 String fecha = eJsonObject.get("fecha").toString();
                 long precio = (long) eJsonObject.get("precio");
                 long numplazas = (long) eJsonObject.get("numplazas");
-                /*Vector<String> pasajeros = null;
+                Vector<String> pasajeros = (Vector<String>) eJsonObject.get("pasajeros");
+                 
+                System.out.println(pasajeros);
 
-                for (String p : pasajeros){
-                    pasajeros.add(eJsonObject.get(p).toString());
-                }*/
 
                 Viaje viaje = new Viaje(codprop,origen,destino,fecha,precio,numplazas);
 
