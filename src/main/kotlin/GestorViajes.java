@@ -158,7 +158,7 @@ public class GestorViajes {
                 long precio = (long) eJsonObject.get("precio");
                 long numplazas = (long) eJsonObject.get("numplazas");
                 Vector<String> pasajeros = (Vector<String>) eJsonObject.get("pasajeros");
-                 
+
                 System.out.println(pasajeros);
 
 
