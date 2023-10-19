@@ -1,3 +1,5 @@
+package src.main.kotlin;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -114,7 +116,8 @@ public class Viaje implements Serializable {
 
     /**
      * Indica si la fecha del viaje ya ha pasado
-     *
+     *[{"fecha":"28-12-2023","precio":100,"codprop":"pedro","pasajeros":[],"numplazas":3,"origen":"Valencia","destino":"Castellón","codviaje":"pVC28"}]
+
      * @return	valor lógico indicando si el viaje es de una fecha pasada
      */
     public boolean finalizado() {

@@ -1,8 +1,11 @@
+package src.main.kotlin;
+
 import org.json.JSONException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import src.main.kotlin.Viaje;
 
 import java.io.File;
 import java.io.FileReader;
@@ -86,7 +89,6 @@ public class GestorViajes {
         }
 
 
-
         // [{"fecha":"07-11-2023","precio":39,"codprop":"juan","pasajeros":[],"numplazas":3,"origen":"Castellón","destino":"Cordoba","codviaje":"jCC07"},{"fecha":"28-05-2023","precio":16,"codprop":"pedro","pasajeros":[],"numplazas":1,"origen":"Castellón","destino":"Alicante","codviaje":"pCA28"}]
     }
 
@@ -141,35 +143,22 @@ public class GestorViajes {
 
 
         try {
-            for (Object e : array) {
-                JSONObject eJsonObject = (JSONObject) e;
-                JSONObject destE = new JSONObject();
-                destE.put("num", eJsonObject.get("id"));
-                //destEstacions.put(destE);
+            for (Object obj : array) {
+                JSONObject jsonViaje = (JSONObject) obj;
 
+                String codviaje = (String) jsonViaje.get("codviaje");
+                String codprop = (String) jsonViaje.get("codprop");
+                String origen = (String) jsonViaje.get("origen");
+                String destino = (String) jsonViaje.get("destino");
+                String fecha = (String) jsonViaje.get("fecha");
+                int precio = ((Long) jsonViaje.get("precio")).intValue();
+                int numplazas = ((Long) jsonViaje.get("numplazas")).intValue();
 
-
-                // Supongamos que el JSON tiene una clave "clave" y un valor asociado "valor"
-                String clave = eJsonObject.get("codviaje").toString();
-                String codprop = eJsonObject.get("codprop").toString();
-                String origen = eJsonObject.get("origen").toString();
-                String destino = eJsonObject.get("destino").toString();
-                String fecha = eJsonObject.get("fecha").toString();
-                long precio = (long) eJsonObject.get("precio");
-                long numplazas = (long) eJsonObject.get("numplazas");
-                Vector<String> pasajeros = (Vector<String>) eJsonObject.get("pasajeros");
-
-                System.out.println(pasajeros);
-
-
-                Viaje viaje = new Viaje(codprop,origen,destino,fecha,precio,numplazas);
-
-                // Agregar la clave y el valor al HashMap
-                mapa.put(clave, viaje);
+                Viaje viaje = new Viaje(codprop, origen, destino, fecha, precio, numplazas);
+                mapa.put(codviaje, viaje);
             }
 
-            // El HashMap ahora contiene los elementos del JSONArray
-            System.out.println(mapa);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -184,8 +173,6 @@ public class GestorViajes {
      * @return JSONArray de viajes con un origen dado. Vacío si no hay viajes disponibles con ese origen
      */
     public JSONArray consultaViajes(String origen) {
-        //POR IMPLEMENTAR
-
 
         /**
          * El cliente codcli reserva el viaje codviaje
@@ -194,74 +181,107 @@ public class GestorViajes {
          * @param codcli
          * @return JSONObject con la información del viaje. Vacío si no existe o no está disponible
          */
-        return null;
-    }
-        public JSONObject reservaViaje (String codviaje, String codcli){
-            // POR IMPLEMENTAR
+        JSONArray viajesDisponibles = new JSONArray();
 
-        return null;
-        }
-
-        /**
-         * El cliente codcli anula su reserva del viaje codviaje
-         *
-         * @param codviaje    codigo del viaje a anular
-         * @param codcli    codigo del cliente
-         * @return JSON del viaje en que se ha anulado la reserva. JSON vacio si no se ha anulado
-         */
-        public JSONObject anulaReserva (String codviaje, String codcli){
-            // POR IMPLEMENTAR
-        return null;
-        }
-
-        /**
-         * Devuelve si una fecha es válida y futura
-         * @param fecha
-         * @return
-         */
-        private boolean es_fecha_valida (String fecha){
-
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
-            try {
-                LocalDate dia = LocalDate.parse(fecha, formatter);
-                LocalDate hoy = LocalDate.now();
-
-                return dia.isAfter(hoy);
-            } catch (DateTimeParseException e) {
-                System.out.println("Fecha invalida: " + fecha);
-                return false;
+        for (Viaje viaje : mapa.values()) {
+            if (viaje.getOrigen().equalsIgnoreCase(origen)) {
+                viajesDisponibles.add(viaje.toJSON());
             }
-
         }
 
-        /**
-         * El cliente codcli oferta un Viaje
-         * @param codcli
-         * @param origen
-         * @param destino
-         * @param fecha
-         * @param precio
-         * @param numplazas
-         * @return JSONObject con los datos del viaje ofertado
-         */
-        public JSONObject ofertaViaje (String codcli, String origen, String destino, String fecha,long precio,
-        long numplazas){
-            // POR IMPLEMENTAR
-        return null;
-        }
+        return viajesDisponibles;
 
-
-        /**
-         * El cliente codcli borra un viaje que ha ofertado
-         *
-         * @param codviaje    codigo del viaje a borrar
-         * @param codcli    codigo del cliente
-         * @return JSONObject del viaje borrado. JSON vacio si no se ha borrado
-         */
-        public JSONObject borraViaje (String codviaje, String codcli){
-            // POR IMPLEMENTAR
-        return null;
-        }
     }
+
+    public JSONObject reservaViaje(String codviaje, String codcli) {
+        // POR IMPLEMENTAR
+        for (String cod : mapa.keySet()) {
+            if (mapa.get(cod).getCodviaje().equals(codviaje)) {
+                if (mapa.get(cod).quedanPlazas()) {
+                    mapa.get(cod).anyadePasajero(codcli);
+                    return mapa.get(cod).toJSON();
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * El cliente codcli anula su reserva del viaje codviaje
+     *
+     * @param codviaje codigo del viaje a anular
+     * @param codcli   codigo del cliente
+     * @return JSON del viaje en que se ha anulado la reserva. JSON vacio si no se ha anulado
+     */
+    public JSONObject anulaReserva(String codviaje, String codcli) {
+        for (String cod : mapa.keySet()) {
+            if (mapa.get(cod).getCodviaje().equals(codviaje)) {
+
+                    mapa.get(cod).borraPasajero(codcli);
+                    return mapa.get(cod).toJSON();
+
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Devuelve si una fecha es válida y futura
+     *
+     * @param fecha
+     * @return
+     */
+    private boolean es_fecha_valida(String fecha) {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        try {
+            LocalDate dia = LocalDate.parse(fecha, formatter);
+            LocalDate hoy = LocalDate.now();
+
+            return dia.isAfter(hoy);
+        } catch (DateTimeParseException e) {
+            System.out.println("Fecha invalida: " + fecha);
+            return false;
+        }
+
+    }
+
+    /**
+     * El cliente codcli oferta un Viaje
+     *
+     * @param codcli
+     * @param origen
+     * @param destino
+     * @param fecha
+     * @param precio
+     * @param numplazas
+     * @return JSONObject con los datos del viaje ofertado
+     */
+    public JSONObject ofertaViaje(String codcli, String origen, String destino, String fecha, long precio,
+                                  long numplazas) {
+        // POR IMPLEMENTAR
+        Viaje nuevoViaje = new Viaje(codcli, origen, destino, fecha, precio, numplazas);
+        while (!es_fecha_valida(fecha)){
+            mapa.put(nuevoViaje.getCodprop(), nuevoViaje);
+            return nuevoViaje.toJSON();
+
+        }
+       return nuevoViaje.toJSON();
+
+    }
+
+    /**
+     * El cliente codcli borra un viaje que ha ofertado
+     *
+     * @param codviaje codigo del viaje a borrar
+     * @param codcli   codigo del cliente
+     * @return JSONObject del viaje borrado. JSON vacio si no se ha borrado
+     */
+    public JSONObject borraViaje(String codviaje, String codcli) {
+        // POR IMPLEMENTAR
+        return null;
+    }
+}
 
